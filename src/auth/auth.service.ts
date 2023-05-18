@@ -3,10 +3,15 @@ import { SendOtpDto } from './dto/send-otp.dto';
 import { ConfigService } from '@nestjs/config';
 import { TwilioService } from 'nestjs-twilio';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private config: ConfigService, private readonly tw: TwilioService) {}
+  constructor(
+    private config: ConfigService,
+    private readonly tw: TwilioService,
+    private readonly userService: UserService
+  ) {}
 
   async sendOTP(body: SendOtpDto) {
     const { phone } = body;
@@ -30,7 +35,7 @@ export class AuthService {
           to: phone,
           code: otp
         });
-      return res.status === 'approved';
+      if (res.status === 'approved') this.userService.createUser({ phone, isPhoneVerified: true });
     } catch (e) {
       console.log(e);
       throw new ForbiddenException('Invalid OTP');
