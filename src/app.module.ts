@@ -1,15 +1,31 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { WishlistModule } from './wishlist/wishlist.module';
-import { OrdersModule } from './orders/orders.module';
-import { CheckoutModule } from './checkout/checkout.module';
+import { validateConfig } from './config.validator';
 
 @Module({
-  imports: [UsersModule, AuthModule, WishlistModule, OrdersModule, CheckoutModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validate: validateConfig
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
+        type: configService.get<'postgres'>('DB_TYPE'),
+        host: configService.get('POSTGRES_HOST'),
+        port: +configService.get('POSTGRES_PORT'),
+        username: configService.get('POSTGRES_USER'),
+        password: configService.get('POSTGRES_PWD'),
+        database: configService.get<string>('POSTGRES_DB_NAME'),
+        logging: configService.get('NODE_ENV') === 'development' ? ['query', 'error'] : ['error'],
+        // TODO: change on rod
+        synchronize: configService.get('NODE_ENV') === 'development' ? true : false
+      }),
+      inject: [ConfigService]
+    })
+  ]
 })
 export class AppModule {}
