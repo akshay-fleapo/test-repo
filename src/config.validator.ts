@@ -37,6 +37,22 @@ class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   DB_NAME: string;
+
+  @IsString()
+  @IsNotEmpty()
+  TWILIO_AUTH_TOKEN: string;
+
+  @IsString()
+  @IsNotEmpty()
+  TWILIO_ACCOUNT_SID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  TWILIO_VERIFY_SERVICE_SID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  TWILIO_MESSAGING_SERVICE_SID: string;
 }
 
 export function validateConfig(configuration: Record<string, unknown>) {

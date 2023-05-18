@@ -4,6 +4,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { validateConfig } from './config.validator';
 import { UserModule } from './user/user.module';
+import { TwilioModule } from 'nestjs-twilio';
 
 @Module({
   imports: [
@@ -22,7 +23,6 @@ import { UserModule } from './user/user.module';
         password: configService.get('POSTGRES_PWD'),
         database: configService.get<string>('POSTGRES_DB_NAME'),
         logging: configService.get('NODE_ENV') === 'development' ? ['query', 'error'] : ['error'],
-        // TODO: change on prod
         synchronize: configService.get('NODE_ENV') === 'development' ? true : false,
         autoLoadEntities: true
       }),
