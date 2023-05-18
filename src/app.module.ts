@@ -5,14 +5,24 @@ import { AuthModule } from './auth/auth.module';
 import { validateConfig } from './config.validator';
 import { UserModule } from './user/user.module';
 import { TwilioModule } from 'nestjs-twilio';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
-    AuthModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: true,
+      autoSchemaFile: true,
+      persistedQueries: false,
+      introspection: true,
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       validate: validateConfig
     }),
+    AuthModule,
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
@@ -28,7 +38,8 @@ import { TwilioModule } from 'nestjs-twilio';
       }),
       inject: [ConfigService]
     }),
-    UserModule
+    UserModule,
+    
   ]
 })
 export class AppModule {}
