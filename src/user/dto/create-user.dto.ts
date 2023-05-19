@@ -1,24 +1,23 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
 
-export class CreateUserByPhoneDto {
+@InputType()
+export class CreateUserDto {
+  @Field(() => String)
+  @IsNotEmpty()
   @IsString()
   firstName: string;
 
+  @IsNotEmpty()
   @IsString()
   lastName: string;
 
-  @IsString()
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @IsString()
+  @IsPhoneNumber()
+  @IsNotEmpty()
   phone: string;
-
-  @IsString()
-  password: string;
-
-  @IsBoolean()
-  isEmailVerified: boolean;
-
-  @IsBoolean()
-  isPhoneVerified: boolean;
 }
