@@ -35,7 +35,10 @@ export class AuthService {
           to: phone,
           code: otp
         });
-      if (res.status === 'approved') this.userService.createUser({ phone, isPhoneVerified: true });
+      if (res.status !== 'approved') throw new Error();
+
+      const user = this.userService.updateUser({ phone, isPhoneVerified: true });
+      return user;
     } catch (e) {
       console.log(e);
       throw new ForbiddenException('Invalid OTP');

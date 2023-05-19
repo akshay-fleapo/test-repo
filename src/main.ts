@@ -5,7 +5,9 @@ import helmet from 'helmet';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log', 'verbose']
+  });
   app.use(helmet());
   app.use(compression());
   app.enableCors();

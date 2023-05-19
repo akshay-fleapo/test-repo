@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SendOtpDto } from './dto/send-otp.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
@@ -17,6 +17,7 @@ export class AuthController {
   }
 
   @Post('/verify-otp')
+  @HttpCode(200)
   verify(@Body() body: VerifyOtpDto) {
     const data = this.authService.verifyOTP(body);
     return data;

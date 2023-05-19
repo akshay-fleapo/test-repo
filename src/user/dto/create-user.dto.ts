@@ -1,6 +1,6 @@
 import { IsBoolean, IsString } from 'class-validator';
 
-export class CreateUserDto {
+export class CreateUserByPhoneDto {
   @IsString()
   firstName: string;
 
