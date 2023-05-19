@@ -1,7 +1,8 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SendOtpDto } from './dto/send-otp.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { JWTAuthGuard } from './guards';
 
 @Controller({
   path: 'auth',
@@ -21,5 +22,11 @@ export class AuthController {
   verify(@Body() body: VerifyOtpDto) {
     const data = this.authService.verifyOTP(body);
     return data;
+  }
+
+  @UseGuards(JWTAuthGuard)
+  @Post('/logout')
+  logout(@Request() req) {
+    return this.authService.logOut(req.user);
   }
 }

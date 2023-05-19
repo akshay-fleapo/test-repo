@@ -15,14 +15,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       playground: true,
       autoSchemaFile: true,
       persistedQueries: false,
-      introspection: true,
+      introspection: true
     }),
     ConfigModule.forRoot({
       isGlobal: true,
       validate: validateConfig
     }),
     AuthModule,
-
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
@@ -39,7 +38,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       inject: [ConfigService]
     }),
     UserModule,
-    
   ]
 })
 export class AppModule {}

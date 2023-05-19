@@ -8,55 +8,38 @@ import { User } from './entity/user.entity';
 export class UserService {
   constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
+  async createUser(createUserDto: Partial<CreateUserDto>): Promise<User> {
+    const user = this.userRepository.create(createUserDto);
+    await this.userRepository.save(user);
+    return user;
+  }
+
   async getUserByPhone(phone: string) {
-    const user = await this.userRepository.findOneOrFail({
-      where: {
-        phone
-      }
-    });
+    const user = await this.userRepository.findOneBy({ phone });
     if (!user) throw new NotFoundException('User not found.');
     return user;
   }
 
-  updateUser(createUserDto: Partial<CreateUserDto>) {
-    const foundUser = this.getUserByPhone(createUserDto.phone);
+  async updateUser(createUserDto: Partial<CreateUserDto>) {
+    const foundUser = await this.userRepository.findOneBy({ phone: createUserDto.phone });
     if (foundUser) return foundUser;
-
-    const user = this.userRepository.create({
-      ...createUserDto
-    });
-
-    try {
-      this.userRepository.save(user);
-    } catch (e) {
-      console.log('throwing error');
-      throw new Error('User already exists');
-    }
-
-    return user;
+    const createdUser = await this.createUser(createUserDto);
+    return createdUser;
   }
+
   async getAllUsers(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
   async getUserById(id: string): Promise<User> {
-    // TODO : either add try/catch or use other method like->  findOneBy({id}) and throw NotFoundException
-    return await this.userRepository.findOneByOrFail({ id });
-  }
-
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this.userRepository.findOneBy({ email: createUserDto.email });
-    if (user) {
-      throw new NotFoundException('User not found');
-    }
-    return await this.userRepository.create(createUserDto);
+    const foundUser = await this.userRepository.findOneBy({ id });
+    if (!foundUser) throw new NotFoundException('User not found.');
+    return foundUser;
   }
 
   async deleteUser(id: string): Promise<User> {
-    const user = await this.userRepository.findOneByOrFail({ id });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    const foundUser = await this.userRepository.findOneBy({ id });
+    if (!foundUser) throw new NotFoundException('User not found');
     await this.userRepository.delete({ id });
     return;
   }

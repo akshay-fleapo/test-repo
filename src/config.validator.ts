@@ -53,6 +53,18 @@ class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   TWILIO_MESSAGING_SERVICE_SID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  JWT_SECRET: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  JWT_ACCESS_EXPIRATION_HOURS: number;
+
+  @IsString()
+  @IsNotEmpty()
+  JWT_ISSUER: string;
 }
 
 export function validateConfig(configuration: Record<string, unknown>) {
