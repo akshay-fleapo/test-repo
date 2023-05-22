@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SendOtpDto } from './dto/send-otp.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
@@ -10,6 +10,13 @@ import { JWTAuthGuard } from './guards';
 })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @UseGuards(JWTAuthGuard)
+  @Get('/')
+  get(@Request() req) {
+    const data = this.authService.getUserDetails(req.user);
+    return data;
+  }
 
   @Post('/otp')
   sendOTP(@Body() body: SendOtpDto) {
@@ -25,7 +32,7 @@ export class AuthController {
   }
 
   @UseGuards(JWTAuthGuard)
-  @Post('/logout')
+  @Get('/logout')
   logout(@Request() req) {
     return this.authService.logOut(req.user);
   }

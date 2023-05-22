@@ -3,12 +3,27 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entity/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { IJwtPayload } from 'src/auth/dto/jwt-payload.interface';
 
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-  async createUser(createUserDto: Partial<CreateUserDto>): Promise<User> {
+  async getAllUsers(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
+
+  // thi API will call in every page for validate the token and extract the user info from token
+  async getUser(user: IJwtPayload): Promise<User> {
+    const foundUser = await this.userRepository.findOneBy({ id: user.id });
+    if (!foundUser) throw new NotFoundException('User not found.');
+    return foundUser;
+  }
+
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    const foundUser = await this.userRepository.findOneBy({ phone: createUserDto.phone });
+    if (foundUser) return foundUser;
     const user = this.userRepository.create(createUserDto);
     await this.userRepository.save(user);
     return user;
@@ -20,21 +35,10 @@ export class UserService {
     return user;
   }
 
-  async updateUser(createUserDto: Partial<CreateUserDto>) {
-    const foundUser = await this.userRepository.findOneBy({ phone: createUserDto.phone });
-    if (foundUser) return foundUser;
-    const createdUser = await this.createUser(createUserDto);
-    return createdUser;
-  }
-
-  async getAllUsers(): Promise<User[]> {
-    return await this.userRepository.find();
-  }
-
-  async getUserById(id: string): Promise<User> {
-    const foundUser = await this.userRepository.findOneBy({ id });
-    if (!foundUser) throw new NotFoundException('User not found.');
-    return foundUser;
+  async updateUser(user: IJwtPayload, updateUserDto: UpdateUserDto) {
+    const updateUser = await this.userRepository.update({ id: user.id }, { ...updateUserDto });
+    if (!updateUser) throw new NotFoundException('User not found.');
+    return updateUser;
   }
 
   async deleteUser(id: string): Promise<User> {

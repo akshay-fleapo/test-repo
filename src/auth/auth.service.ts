@@ -43,7 +43,6 @@ export class AuthService {
   async generateToken(userId: string) {
     const jwt = await this.createJWT(userId);
     const payload: IJwtPayload = { jti: jwt.id, id: userId };
-    console.log('first -------', payload);
     return await this.jwtService.sign(payload);
   }
 
@@ -60,7 +59,7 @@ export class AuthService {
         if (res.status !== 'approved') throw new Error();
       }
 
-      const user = await this.userService.updateUser({ phone, isPhoneVerified: true });
+      const user = await this.userService.createUser({ phone, isPhoneVerified: true });
 
       const token = await this.generateToken(user.id);
       return { user: user.id, token };
@@ -70,7 +69,12 @@ export class AuthService {
     }
   }
 
-  async logOut(user: any) {
+  async getUserDetails(user: IJwtPayload) {
+    const userDetails = await this.userService.getUser(user);
+    return userDetails;
+  }
+
+  async logOut(user: IJwtPayload) {
     await this.authTokenRepository.delete({ id: user.jti, user: { id: user.id } });
     return { message: 'Logged out successfully.' };
   }
