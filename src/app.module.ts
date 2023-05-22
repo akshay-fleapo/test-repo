@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { TwilioModule } from 'nestjs-twilio';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { UserProfileModule } from './user-profile/user-profile.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -36,7 +37,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       }),
       inject: [ConfigService]
     }),
-    UserModule
+    UserModule,
+    UserProfileModule
   ]
 })
 export class AppModule {}

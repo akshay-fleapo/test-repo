@@ -1,11 +1,13 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { AuthToken } from 'src/auth/entities/auth-token.entity';
+import { UserProfile } from 'src/user-profile/entity/user-profile.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
@@ -83,4 +85,7 @@ export class User {
 
   @OneToMany(() => AuthToken, ({ user }) => user)
   authTokens: AuthToken[];
+
+  @OneToOne(() => UserProfile, ({ userId }) => userId)
+  userProfile: UserProfile;
 }
