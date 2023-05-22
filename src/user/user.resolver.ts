@@ -12,7 +12,7 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => [User])
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers() {
     return this.userService.getAllUsers();
   }
 
@@ -24,7 +24,7 @@ export class UserResolver {
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
-  async deleteUser(@Args('id') id: string): Promise<User> {
+  async deleteUser(@Args('id') id: string) {
     return this.userService.deleteUser(id);
   }
 }

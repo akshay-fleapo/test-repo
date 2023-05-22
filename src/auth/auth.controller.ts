@@ -33,7 +33,7 @@ export class AuthController {
 
   @UseGuards(JWTAuthGuard)
   @Get('/logout')
-  logout(@Request() req) {
+  logOut(@Request() req) {
     return this.authService.logOut(req.user);
   }
 }

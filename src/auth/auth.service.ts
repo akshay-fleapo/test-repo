@@ -9,6 +9,7 @@ import { IJwtPayload } from './dto/jwt-payload.interface';
 import { SendOtpDto } from './dto/send-otp.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { AuthToken } from './entities/auth-token.entity';
+import { User } from 'src/user/entity/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -59,7 +60,7 @@ export class AuthService {
         if (res.status !== 'approved') throw new Error();
       }
 
-      const user = await this.userService.createUser({ phone, isPhoneVerified: true });
+      const user = (await this.userService.createUser({ phone, isPhoneVerified: true })) as User;
 
       const token = await this.generateToken(user.id);
       return { user: user.id, token };
@@ -81,7 +82,10 @@ export class AuthService {
 
   async validateJWT(payload: IJwtPayload) {
     if (!(payload.id && payload.jti)) throw new UnauthorizedException();
-    const validated = await this.authTokenRepository.findOneBy({ id: payload.jti, user: { id: payload.id } });
+    const validated = await this.authTokenRepository.findOneBy({
+      id: payload.jti,
+      user: { id: payload.id },
+    });
     if (!validated) throw new UnauthorizedException();
     return payload;
   }

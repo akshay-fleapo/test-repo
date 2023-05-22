@@ -1,6 +1,6 @@
 ## AUTH MODULE
 
-    - [] [POST]        /send-otp
-    - [] [POST]        /verify-otp
-    - [] [GET]         /logout
-    - [] [GET]         /
+    - [x] [POST]        /send-otp
+    - [x] [POST]        /verify-otp
+    - [x] [GET]         /logout
+    - [x] [GET]         /
