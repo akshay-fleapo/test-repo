@@ -2,6 +2,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Address } from 'src/address/entity/address.entity';
 import { AuthToken } from 'src/auth/entities/auth-token.entity';
 import { UserProfile } from 'src/user-profile/entity/user-profile.entity';
+import { Wishlist } from 'src/wishlist/entity/wishlist.entity';
 import {
   Column,
   CreateDateColumn,
@@ -102,4 +103,10 @@ export class User {
   @OneToMany(() => Address, ({ user }) => user)
   @Field(() => [Address], { nullable: true })
   addresses: Relation<Address[]>;
+
+  // One to many relationship with wishlist
+
+  @OneToMany(() => Wishlist, ({ user }) => user)
+  @Field(() => [Wishlist], { nullable: true })
+  wishlists: Relation<Wishlist[]>;
 }

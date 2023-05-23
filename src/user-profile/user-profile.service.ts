@@ -14,7 +14,7 @@ export class UserProfileService {
   ) {}
 
   async getUserProfile(user: IJwtPayload) {
-    const foundUser = this.userProfileRepository.findOne({
+    const foundUser = await this.userProfileRepository.findOne({
       where: { user: { id: user.id }, isDeleted: false },
       relations: ['user']
     });
@@ -28,11 +28,11 @@ export class UserProfileService {
     });
     if (foundUser) throw new NotFoundException('User profile already exists');
 
-    const userProfile = this.userProfileRepository.create({
+    const userProfile = await this.userProfileRepository.create({
       ...createUserProfileDto,
       user: { id: user.id }
     });
-    return this.userProfileRepository.save(userProfile);
+    return await this.userProfileRepository.save(userProfile);
   }
 
   async updateUserProfile(user: IJwtPayload, updateUserProfileDto: UpdateUserProfileDto) {

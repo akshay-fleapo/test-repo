@@ -14,7 +14,10 @@ export class AddressService {
   ) {}
 
   async getAllAddress(user: IJwtPayload) {
-    return this.addressRepository.find({ where: { user: { id: user.id }, isDeleted: false }, relations: ['user'] });
+    return await this.addressRepository.find({
+      where: { user: { id: user.id }, isDeleted: false },
+      relations: ['user']
+    });
   }
 
   async getAddressById(user: IJwtPayload, id: string) {
@@ -38,7 +41,7 @@ export class AddressService {
       user: { id: user.id },
       isDefault: createAddressDto.isDefault ? createAddressDto.isDefault : false
     });
-    return this.addressRepository.save(address);
+    return await this.addressRepository.save(address);
   }
 
   async updateAddress(user: IJwtPayload, id: string, updateAddressDto: UpdateAddressDto) {
@@ -53,12 +56,12 @@ export class AddressService {
         await this.addressRepository.save(defaultAddress);
       }
     }
-    return this.addressRepository.save({ ...address, ...updateAddressDto });
+    return await this.addressRepository.save({ ...address, ...updateAddressDto });
   }
 
   async deleteAddress(user: IJwtPayload, id: string) {
     const address = await this.addressRepository.findOne({ where: { id, user: { id: user.id }, isDeleted: false } });
     if (!address) throw new NotFoundException('Address not found');
-    return this.addressRepository.save({ ...address, isDeleted: true });
+    return await this.addressRepository.save({ ...address, isDeleted: true });
   }
 }
