@@ -7,6 +7,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -31,10 +32,12 @@ export class User {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
+  @Index()
   email: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
+  @Index()
   phone: string;
 
   @Field({ nullable: true })

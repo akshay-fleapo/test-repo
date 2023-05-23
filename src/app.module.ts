@@ -8,6 +8,7 @@ import { validateConfig } from './config.validator';
 import { UserProfileModule } from './user-profile/user-profile.module';
 import { UserModule } from './user/user.module';
 import { AddressModule } from './address/address.module';
+import { WishlistModule } from './wishlist/wishlist.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -39,7 +40,8 @@ import { AddressModule } from './address/address.module';
     }),
     UserModule,
     UserProfileModule,
-    AddressModule
+    AddressModule,
+    WishlistModule
   ]
 })
 export class AppModule {}

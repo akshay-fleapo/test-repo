@@ -27,6 +27,7 @@ export class UserProfile {
 
   @Column({ name: 'user_name' })
   @Field()
+  @Index()
   userName: string;
 
   @Column()

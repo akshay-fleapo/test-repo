@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Address } from './entity/address.entity';
-import { Not, Repository } from 'typeorm';
 import { IJwtPayload } from 'src/auth/dto/jwt-payload.interface';
+import { Repository } from 'typeorm';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
+import { Address } from './entity/address.entity';
 
 @Injectable()
 export class AddressService {
