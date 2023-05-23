@@ -7,7 +7,7 @@ import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn, Re
 export class UserProfile {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => ID)
-  id: number;
+  id: string;
 
   @Column({ name: 'first_name' })
   @Field()
@@ -50,11 +50,11 @@ export class UserProfile {
   backgroundImageUrl: string;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
-  @Field()
+  @Field(() => Date)
   createdAt: Date;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
-  @Field()
+  @Field(() => Date)
   updatedAt: Date;
 
   @Column({ nullable: true, name: 'deleted_at' })

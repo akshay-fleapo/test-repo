@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Address } from 'src/address/entity/address.entity';
 import { AuthToken } from 'src/auth/entities/auth-token.entity';
 import { UserProfile } from 'src/user-profile/entity/user-profile.entity';
 import {
@@ -87,9 +88,15 @@ export class User {
   @OneToMany(() => AuthToken, ({ user }) => user)
   authTokens: AuthToken[];
 
-  // ONE TO ONE RELATIONSHIP WITH USER PROFILE
+  // one to one relationship with user profile
 
   @OneToOne(() => UserProfile, ({ user }) => user)
   @Field(() => UserProfile, { nullable: true })
   userProfile: Relation<UserProfile>;
+
+  // One to many relationship with address
+
+  @OneToMany(() => Address, ({ user }) => user)
+  @Field(() => [Address], { nullable: true })
+  addresses: Relation<Address[]>;
 }

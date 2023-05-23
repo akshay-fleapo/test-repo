@@ -45,8 +45,10 @@ export class UserProfileService {
   }
 
   async deleteUserProfile(user: IJwtPayload) {
-    const foundUser = await this.getUserProfile(user);
-    await this.userProfileRepository.update({ user: { id: user.id } }, { isDeleted: true });
-    return foundUser;
+    const foundUser = await this.userProfileRepository.findOne({
+      where: { user: { id: user.id }, isDeleted: false }
+    });
+    if (!foundUser) throw new NotFoundException('User profile not found');
+    return await this.userProfileRepository.save({ ...foundUser, isDeleted: true });
   }
 }
