@@ -9,6 +9,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn
 } from 'typeorm';
 
@@ -86,6 +87,9 @@ export class User {
   @OneToMany(() => AuthToken, ({ user }) => user)
   authTokens: AuthToken[];
 
-  @OneToOne(() => UserProfile, ({ userId }) => userId)
-  userProfile: UserProfile;
+  // ONE TO ONE RELATIONSHIP WITH USER PROFILE
+
+  @OneToOne(() => UserProfile, ({ user }) => user)
+  @Field(() => UserProfile, { nullable: true })
+  userProfile: Relation<UserProfile>;
 }

@@ -6,22 +6,39 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { IJwtPayload } from 'src/auth/dto/jwt-payload.interface';
 import { UserProfileService } from './user-profile.service';
 import { CreateUserProfileDto } from './dto/create-user-profile.dto';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 
 @Resolver(() => UserProfile)
 export class UserProfileResolver {
   constructor(private readonly userProfileService: UserProfileService) {}
 
-  @Query(() => [UserProfile])
-  async getAllUserProfiles() {
-    return [];
+  @UseGuards(GqlAuthGuard)
+  @Query(() => UserProfile)
+  async getUserProfile(@CurrentUser() user: IJwtPayload) {
+    return this.userProfileService.getUserProfile(user);
   }
 
-  //   @UseGuards(GqlAuthGuard)
-  //   @Mutation(() => UserProfile)
-  //   async createUserProfile(
-  //     @CurrentUser() user: IJwtPayload,
-  //     @Args('createUserProfileInput') createUserProfileDto: CreateUserProfileDto
-  //   ) {
-  //     return this.userProfileService.createUserProfile(user, createUserProfileDto);
-  //   }
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => UserProfile)
+  async createUserProfile(
+    @CurrentUser() user: IJwtPayload,
+    @Args('createUserProfileInput') createUserProfileDto: CreateUserProfileDto
+  ) {
+    return this.userProfileService.createUserProfile(user, createUserProfileDto);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => UserProfile)
+  async updateUserProfile(
+    @CurrentUser() user: IJwtPayload,
+    @Args('updateUserProfileInput') updateUserProfileDto: UpdateUserProfileDto
+  ) {
+    return this.userProfileService.updateUserProfile(user, updateUserProfileDto);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => UserProfile)
+  async deleteUserProfile(@CurrentUser() user: IJwtPayload) {
+    return this.userProfileService.deleteUserProfile(user);
+  }
 }

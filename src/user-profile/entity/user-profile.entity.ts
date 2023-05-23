@@ -1,11 +1,11 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { User } from 'src/user/entity/user.entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 @Entity('user_profile')
 @ObjectType()
 export class UserProfile {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   @Field(() => ID)
   id: number;
 
@@ -17,7 +17,7 @@ export class UserProfile {
   @Field()
   lastName: string;
 
-  @Column({ name: 'avatar_url' , default: null })
+  @Column({ name: 'avatar_url', default: null })
   @Field()
   avatarUrl: string;
 
@@ -37,15 +37,15 @@ export class UserProfile {
   @Field()
   theme: string;
 
-  @Column({ name: 'background_color' , default: null })
+  @Column({ name: 'background_color', default: null })
   @Field()
   backgroundColor: string;
 
-  @Column({ name: 'text_color' , default: null })
+  @Column({ name: 'text_color', default: null })
   @Field()
   textColor: string;
 
-  @Column({ name: 'background_image_url' , default: null })
+  @Column({ name: 'background_image_url', default: null })
   @Field()
   backgroundImageUrl: string;
 
@@ -69,8 +69,11 @@ export class UserProfile {
   @Field(() => Boolean, { defaultValue: false })
   isDeleted: boolean;
 
-  // ONE-TO-ONE RELATIONSHIP
-  @OneToOne(() => User)
+  // ONE-TO-ONE RELATIONSHIP WITH USER
+
+  @OneToOne(() => User, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
-  userId: User;
+  @Index()
+  @Field(() => User)
+  user: Relation<User>;
 }
