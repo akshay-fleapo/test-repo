@@ -18,6 +18,16 @@ export class WishlistResolver {
     return await this.wishlistService.getAllWishlist(user);
   }
 
+  @Query(() => [Wishlist])
+  async getWishlistsByUserId(@Args('userId') userId: string) {
+    return await this.wishlistService.getWishlistsByUserId(userId);
+  }
+
+  @Query(() => Wishlist)
+  async getWishlistById(@Args('id') id: string) {
+    return await this.wishlistService.getWishlistById(id);
+  }
+
   @UseGuards(GqlAuthGuard)
   @Query(() => Wishlist)
   async getWishlistByAddressId(@CurrentUser() user: IJwtPayload, @Args('addressId') addressId: string) {

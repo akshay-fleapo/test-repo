@@ -6,6 +6,8 @@ import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { Wishlist } from './entity/wishlist.entity';
 
+// TODO : ASK isActive Problem statement ... IsActive Wishlist will be shown in the list or not and how it will be used
+
 @Injectable()
 export class WishlistService {
   constructor(
@@ -18,6 +20,22 @@ export class WishlistService {
       where: { user: { id: user.id }, isDeleted: false },
       relations: ['user', 'address']
     });
+  }
+
+  async getWishlistsByUserId(userId: string) {
+    return await this.wishlistRepository.find({
+      where: { user: { id: userId }, isDeleted: false },
+      relations: ['user', 'address']
+    });
+  }
+
+  async getWishlistById(id: string) {
+    const wishlist = await this.wishlistRepository.findOne({
+      where: { id, isDeleted: false },
+      relations: ['user', 'address']
+    });
+    if (!wishlist) throw new NotFoundException('Wishlist not found');
+    return wishlist;
   }
 
   async getWishlistByAddressId(user: IJwtPayload, addressId: string) {

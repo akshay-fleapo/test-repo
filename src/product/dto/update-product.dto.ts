@@ -1,36 +1,36 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
-export class UpdateWishlistDto {
+export class UpdateProductDto {
   @Field({ nullable: true })
-  @IsOptional()
   @IsString()
+  @IsOptional()
   name: string;
 
   @Field({ nullable: true })
-  @IsOptional()
   @IsString()
+  @IsOptional()
   description: string;
 
   @Field({ nullable: true })
+  @IsNumber()
   @IsOptional()
-  @IsString()
-  bannerImageUrl: string;
+  price: number;
 
   @Field({ nullable: true })
-  @IsOptional()
   @IsString()
+  @IsOptional()
   slug: string;
 
   @Field({ nullable: true })
-  @IsOptional()
   @IsString()
-  @IsUUID()
-  address: string;
-
-  @Field({ nullable: true })
   @IsOptional()
-  @IsBoolean()
-  isActive: boolean;
+  url: string;
+
+  //   // TODO : Ask this
+  //   @Field({ nullable: true })
+  //   @IsString()
+  //   @IsOptional()
+  //   convictionalProductId: string;
 }

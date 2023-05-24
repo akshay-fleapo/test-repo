@@ -1,7 +1,18 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Address } from 'src/address/entity/address.entity';
 import { User } from 'src/user/entity/user.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
+import { WishlistItems } from 'src/wishlist-items/entity/wishlist-items.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  Relation
+} from 'typeorm';
 
 @Entity('wishlist')
 @ObjectType()
@@ -61,4 +72,10 @@ export class Wishlist {
   @Index()
   @Field(() => User)
   user: Relation<User>;
+
+  // ONE TO MANY RELATIONSHIP WITH WISHLIST ITEMS
+
+  @OneToMany(() => WishlistItems, ({ wishlist }) => wishlist)
+  @Field(() => [WishlistItems])
+  wishlistItems: Relation<WishlistItems[]>;
 }
