@@ -10,7 +10,7 @@ export class ProductResolver {
 
   @Query(() => [Product])
   async getProducts() {
-    return await this.productService.getProducts();
+    return await this.productService.getProductInventory();
   }
 
   @Query(() => Product)
