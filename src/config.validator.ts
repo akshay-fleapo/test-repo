@@ -65,6 +65,10 @@ class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   JWT_ISSUER: string;
+
+  @IsString()
+  @IsNotEmpty()
+  PRODUCT_API_URL: string;
 }
 
 export function validateConfig(configuration: Record<string, unknown>) {

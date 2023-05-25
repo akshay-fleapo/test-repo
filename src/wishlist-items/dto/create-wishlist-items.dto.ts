@@ -10,7 +10,6 @@ export class CreateWishlistItemsDto {
   wishlistId: string;
 
   @Field(() => String)
-  @IsUUID()
   @IsString()
   @IsNotEmpty()
   productId: string;

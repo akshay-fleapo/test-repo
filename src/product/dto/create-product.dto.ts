@@ -1,37 +1,41 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class CreateProductDto {
   @Field()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
 
   @Field()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   description: string;
+
+
+  @Field()
+  @IsString()
+  @IsOptional()
+  imageUrl: string;
 
   @Field()
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   price: number;
 
   @Field()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   slug: string;
 
   @Field()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   url: string;
 
-  // TODO : Ask this
-
-  //   @Field()
-  //   @IsString()
-  //   @IsNotEmpty()
-  //   convictionalProductId: string;
+  @Field()
+  @IsString()
+  @IsOptional()
+  convictionalProductId: string;
 }
