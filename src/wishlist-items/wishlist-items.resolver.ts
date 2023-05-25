@@ -15,8 +15,13 @@ export class WishlistItemsResolver {
   }
 
   @Query(() => [WishlistItems])
-  async getAllWishlistItemsByWishlistId(@Args('wishlistId', { type: () => String }) wishlistId: string) {
-    return await this.wishlistItemsService.getAllWishlistItemsByWishlistId(wishlistId);
+  async getAllWishlistItemsByWishlistId(
+    @Args('wishlistId', { type: () => String }) wishlistId: string,
+    @Args('priceHL', { type: () => Boolean, nullable: true }) priceHL: boolean,
+    @Args('priceLH', { type: () => Boolean, nullable: true }) priceLH: boolean,
+    @Args('title', { type: () => String, nullable: true }) title: string
+  ) {
+    return await this.wishlistItemsService.getAllWishlistItemsByWishlistId(wishlistId, priceHL, priceLH, title);
   }
 
   @UseGuards(GqlAuthGuard)

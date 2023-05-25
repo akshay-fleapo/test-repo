@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductService } from 'src/product/product.service';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { CreateWishlistItemsDto } from './dto/create-wishlist-items.dto';
 import { WishlistItems } from './entity/wishlist-items.entity';
 
@@ -19,10 +19,18 @@ export class WishlistItemsService {
     return foundItem;
   }
 
-  async getAllWishlistItemsByWishlistId(wishlistId: string) {
+  async getAllWishlistItemsByWishlistId(wishlistId: string, priceHL: boolean, priceLH: boolean, title: string) {
     const foundItems = await this.wishlistItemsRepository.find({
-      where: { wishlist: { id: wishlistId } },
-      relations: ['product', 'wishlist']
+      where: {
+        wishlist: { id: wishlistId },
+        product: {
+          name: title && Raw((alias) => `${alias} ILIKE '%${title}%'`)
+        }
+      },
+      relations: { product: true, wishlist: true },
+      order: {
+        product: { price: priceHL ? 'DESC' : priceLH ? 'ASC' : undefined }
+      }
     });
     if (!foundItems) throw new NotFoundException(`Wishlist items with wishlistId ${wishlistId} not found`);
     return foundItems;

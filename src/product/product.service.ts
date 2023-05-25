@@ -26,7 +26,7 @@ export class ProductService {
   }
 
   async getProductInventory(page: number = 1, limit: number = 20, search: string) {
-    // TODO : Change this logic after getting gala gala API (THIS LOGIC IS FOT TESTING PURPOSE ONLY)
+    // TODO : Change this logic after getting gala gala API (THIS LOGIC IS FOR TESTING PURPOSE ONLY)
 
     let url: string = `${this.configService.get('PRODUCT_API_URL')}?_page=${page}&_limit=${limit}`;
     if (search) url += `&title_like=${search}`;
