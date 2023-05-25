@@ -6,7 +6,6 @@ import { IJwtPayload } from 'src/auth/dto/jwt-payload.interface';
 import { CreateCheckoutDto } from './dto/create-checkout.dto';
 
 @Injectable()
-
 export class CheckoutService {
     constructor(
         @InjectRepository(Checkout)
@@ -42,7 +41,7 @@ export class CheckoutService {
 
     async deleteCheckout(user: IJwtPayload, id: string) {
         const checkout = await this.checkoutRepository.findOne({ where: { id, gifter: { id: user.id } } });
-        if (!checkout) throw new NotFoundException('Checkout not found');
+        if (!checkout) throw new NotFoundException('Checkout Item not found');
         return await this.checkoutRepository.save({ ...checkout });
       }
 
