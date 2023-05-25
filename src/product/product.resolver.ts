@@ -12,9 +12,9 @@ export class ProductResolver {
   async getProductInventory(
     @Args('page', { type: () => Number, nullable: true }) page: number,
     @Args('limit', { type: () => Number, nullable: true }) limit: number,
-    @Args('search', { type: () => String, nullable: true }) search: string
+    @Args('title', { type: () => String, nullable: true }) title: string
   ) {
-    return await this.productService.getProductInventory(page, limit, search);
+    return await this.productService.getProductInventory(page, limit, title);
   }
 
   @Query(() => Product)
