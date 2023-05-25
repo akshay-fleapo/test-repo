@@ -12,6 +12,7 @@ import { WishlistModule } from './wishlist/wishlist.module';
 import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
 import { WishlistItemsModule } from './wishlist-items/wishlist-items.module';
+import { CheckoutModule } from './checkout/checkout.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -47,7 +48,8 @@ import { WishlistItemsModule } from './wishlist-items/wishlist-items.module';
     WishlistModule,
     OrderModule,
     ProductModule,
-    WishlistItemsModule
+    WishlistItemsModule,
+    CheckoutModule
   ]
 })
 export class AppModule {}
