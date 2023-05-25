@@ -84,9 +84,21 @@ export class AuthService {
     if (!(payload.id && payload.jti)) throw new UnauthorizedException();
     const validated = await this.authTokenRepository.findOneBy({
       id: payload.jti,
-      user: { id: payload.id },
+      user: { id: payload.id }
     });
     if (!validated) throw new UnauthorizedException();
     return payload;
+  }
+
+  public async validateJWTForTryAuth(token: string) {
+    if (!token) return false;
+    const payload = this.jwtService.decode(token) as IJwtPayload;
+    if (!(payload.id && payload.jti)) throw new UnauthorizedException();
+    const validated = await this.authTokenRepository.findOneBy({
+      id: payload.jti,
+      user: { id: payload.id }
+    });
+    if (!validated) return false;
+    return true;
   }
 }

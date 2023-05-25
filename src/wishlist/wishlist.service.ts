@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { Wishlist } from './entity/wishlist.entity';
+import { AuthService } from 'src/auth/auth.service';
 
 // TODO : ASK isActive Problem statement ... IsActive Wishlist will be shown in the list or not and how it will be used
 
@@ -12,7 +13,7 @@ import { Wishlist } from './entity/wishlist.entity';
 export class WishlistService {
   constructor(
     @InjectRepository(Wishlist)
-    private readonly wishlistRepository: Repository<Wishlist>
+    private readonly wishlistRepository: Repository<Wishlist> // private readonly authService: AuthService
   ) {}
 
   async getAllWishlist(user: IJwtPayload) {
@@ -22,9 +23,9 @@ export class WishlistService {
     });
   }
 
-  async getWishlistsByUserId(userId: string) {
+  async getWishlistsByUserId(user: boolean, userId: string) {
     return await this.wishlistRepository.find({
-      where: { user: { id: userId }, isDeleted: false, isActive: true },
+      where: { user: { id: userId }, isDeleted: false, ...(!user && { isActive: true }) },
       relations: ['user', 'address']
     });
   }
@@ -57,7 +58,7 @@ export class WishlistService {
   }
 
   async updateWishlist(user: IJwtPayload, id: string, updateWishlistDto: UpdateWishlistDto) {
-    console.log("user" , user.id)
+    console.log('user', user.id);
     const wishlist = await this.wishlistRepository.findOne({ where: { id, user: { id: user.id }, isDeleted: false } });
     if (!wishlist) throw new NotFoundException('Wishlist not found');
     return await this.wishlistRepository.save({

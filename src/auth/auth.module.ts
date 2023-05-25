@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { TwilioModule } from 'nestjs-twilio';
+import { TwilioModule, TwilioService } from 'nestjs-twilio';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
@@ -36,6 +36,6 @@ import { JwtStrategy } from './strategies';
   ],
   controllers: [AuthController],
   providers: [AuthService, UserService, JwtStrategy],
-  exports: [JwtModule, PassportModule]
+  exports: [JwtModule, PassportModule,]
 })
 export class AuthModule {}

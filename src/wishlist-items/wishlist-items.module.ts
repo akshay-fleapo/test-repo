@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WishlistItems } from './entity/wishlist-items.entity';
 import { ProductService } from 'src/product/product.service';
 import { Product } from 'src/product/entity/product.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [TypeOrmModule.forFeature([WishlistItems]),TypeOrmModule.forFeature([Product])],
-  providers: [WishlistItemsResolver, WishlistItemsService, ProductService]
+  providers: [WishlistItemsResolver, WishlistItemsService, ProductService , JwtService]
 })
 export class WishlistItemsModule {}

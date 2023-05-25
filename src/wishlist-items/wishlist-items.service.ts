@@ -13,18 +13,19 @@ export class WishlistItemsService {
     private readonly productService: ProductService
   ) {}
 
-  async getWishlistItemById(id: string) {
-    const foundItem = await this.wishlistItemsRepository.findOne({ where: { id }, relations: ['product', 'wishlist'] });
-    if (!foundItem) throw new NotFoundException(`Wishlist item with id ${id} not found`);
-    return foundItem;
-  }
-
-  async getAllWishlistItemsByWishlistId(wishlistId: string, priceHL: boolean, priceLH: boolean, title: string) {
+  async getAllWishlistItemsByWishlistId(
+    user: boolean,
+    wishlistId: string,
+    priceHL: boolean,
+    priceLH: boolean,
+    title: string
+  ) {
     const foundItems = await this.wishlistItemsRepository.find({
       where: {
-        wishlist: { id: wishlistId },
+        wishlist: { id: wishlistId, ...(!user && { isActive: true }) },
         product: {
-          name: title && Raw((alias) => `${alias} ILIKE '%${title}%'`)
+          name: title && Raw((alias) => `${alias} ILIKE '%${title}%'`),
+          ...(!user && { isActive: true })
         }
       },
       relations: { product: true, wishlist: true },

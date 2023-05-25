@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { Request, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { IJwtPayload } from 'src/auth/dto/jwt-payload.interface';
@@ -7,6 +7,7 @@ import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { Wishlist } from './entity/wishlist.entity';
 import { WishlistService } from './wishlist.service';
+import { BasicGuard } from 'src/auth/guards/basic-auth.guard';
 
 @Resolver()
 export class WishlistResolver {
@@ -18,9 +19,10 @@ export class WishlistResolver {
     return await this.wishlistService.getAllWishlist(user);
   }
 
+  @UseGuards(BasicGuard)
   @Query(() => [Wishlist])
-  async getWishlistsByUserId(@Args('userId') userId: string) {
-    return await this.wishlistService.getWishlistsByUserId(userId);
+  async getWishlistsByUserId(@CurrentUser() user: boolean, @Args('userId') userId: string) {
+    return await this.wishlistService.getWishlistsByUserId(user, userId);
   }
 
   @Query(() => Wishlist)
