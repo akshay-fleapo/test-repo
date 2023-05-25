@@ -14,6 +14,11 @@ export class UpdateProductDto {
   description: string;
 
   @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  imageUrl: string;
+
+  @Field({ nullable: true })
   @IsNumber()
   @IsOptional()
   price: number;
@@ -28,9 +33,4 @@ export class UpdateProductDto {
   @IsOptional()
   url: string;
 
-  //   // TODO : Ask this
-  //   @Field({ nullable: true })
-  //   @IsString()
-  //   @IsOptional()
-  //   convictionalProductId: string;
 }

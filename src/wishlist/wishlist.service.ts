@@ -24,14 +24,14 @@ export class WishlistService {
 
   async getWishlistsByUserId(userId: string) {
     return await this.wishlistRepository.find({
-      where: { user: { id: userId }, isDeleted: false },
+      where: { user: { id: userId }, isDeleted: false, isActive: true },
       relations: ['user', 'address']
     });
   }
 
   async getWishlistById(id: string) {
     const wishlist = await this.wishlistRepository.findOne({
-      where: { id, isDeleted: false },
+      where: { id, isDeleted: false, isActive: true },
       relations: ['user', 'address']
     });
     if (!wishlist) throw new NotFoundException('Wishlist not found');
@@ -57,6 +57,7 @@ export class WishlistService {
   }
 
   async updateWishlist(user: IJwtPayload, id: string, updateWishlistDto: UpdateWishlistDto) {
+    console.log("user" , user.id)
     const wishlist = await this.wishlistRepository.findOne({ where: { id, user: { id: user.id }, isDeleted: false } });
     if (!wishlist) throw new NotFoundException('Wishlist not found');
     return await this.wishlistRepository.save({

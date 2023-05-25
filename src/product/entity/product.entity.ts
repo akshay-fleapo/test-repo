@@ -17,6 +17,10 @@ export class Product {
   @Field(() => String)
   description: string;
 
+  @Column({ name: 'image_url', default: null })
+  @Field(() => String)
+  imageUrl: string;
+
   @Column()
   @Field(() => Number)
   price: number;
@@ -59,6 +63,5 @@ export class Product {
   // ONE TO ONE RELATIONSHIP WITH WIHSILIST ITEMS
 
   @OneToOne(() => WishlistItems, ({ product }) => product)
-  @Field(() => WishlistItems)
   wishlistItems: Relation<WishlistItems>;
 }
