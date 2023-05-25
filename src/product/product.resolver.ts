@@ -9,8 +9,12 @@ export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
   @Query(() => [Product])
-  async getProducts() {
-    return await this.productService.getProductInventory();
+  async getProductInventory(
+    @Args('page', { type: () => Number, nullable: true }) page: number,
+    @Args('limit', { type: () => Number, nullable: true }) limit: number,
+    @Args('search', { type: () => String, nullable: true }) search: string
+  ) {
+    return await this.productService.getProductInventory(page, limit, search);
   }
 
   @Query(() => Product)

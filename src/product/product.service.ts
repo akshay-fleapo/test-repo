@@ -25,9 +25,30 @@ export class ProductService {
     }
   }
 
-  async getProducts() {
-    // TODO : Add gala-gala products
-    return await this.productRepository.find({ where: { isDeleted: false, isActive: true } });
+  async getProductInventory(page: number = 1, limit: number = 20, search: string) {
+    // TODO : Change this logic after getting gala gala API (THIS LOGIC IS FOT TESTING PURPOSE ONLY)
+
+    let url: string = `${this.configService.get('PRODUCT_API_URL')}?_page=${page}&_limit=${limit}`;
+    if (search) url += `&title_like=${search}`;
+
+    const resp = await axios.get(url);
+    const products = await resp.data;
+
+    return products?.map((product) => {
+      const parsedDescription = parse(product?.description)
+        ?.querySelector('[data-element="main"]')
+        ?.text.replace(/<\/?p>/g, ' ')
+        ?.trim();
+      return {
+        convictionalProductId: product.product_id,
+        name: product.title,
+        description: parsedDescription ?? '',
+        price: +product.price,
+        slug: product.link.split('/shop/')?.[1]?.split('.html')?.[0],
+        url: product.link,
+        imageUrl: product.image_link
+      };
+    });
   }
 
   async getProductById(id: string) {
@@ -46,23 +67,23 @@ export class ProductService {
     const product = await this.getProductFromProductAPI(createProductDto.convictionalProductId);
     if (product) {
       const parsedDescription = parse(product.description)
-        .querySelector('[data-element="main"]')
-        .text.replace(/<\/?p>/g, ' ')
-        .trim();
+        ?.querySelector('[data-element="main"]')
+        ?.text.replace(/<\/?p>/g, ' ')
+        ?.trim();
 
-      const newProduct = await this.productRepository.create({
+      const newProduct = this.productRepository.create({
         ...createProductDto,
         convictionalProductId: product.product_id,
         name: product.title,
-        description: parsedDescription,
+        description: parsedDescription ?? '',
         price: +product.price,
-        slug: product.link.split('/shop/')[1].split('.html')[0],
+        slug: product.link.split('/shop/')?.[1].split('.html')?.[0],
         url: product.link,
         imageUrl: product.image_link
       });
       return await this.productRepository.save(newProduct);
     } else {
-      const product = await this.productRepository.create(createProductDto);
+      const product = this.productRepository.create(createProductDto);
       return await this.productRepository.save(product);
     }
   }
