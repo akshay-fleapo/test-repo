@@ -26,6 +26,10 @@ export class CheckoutResolver {
         return this.checkOutService.createCheckout(user, createCheckoutDto);
     }
 
-
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => Checkout)
+    async deleteCheckout(@CurrentUser() user: IJwtPayload, @Args('id') id: string) {
+        return await this.checkOutService.deleteCheckout(user, id);
+    }
 
 }

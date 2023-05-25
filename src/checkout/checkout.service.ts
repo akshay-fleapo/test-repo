@@ -29,7 +29,7 @@ export class CheckoutService {
         });
         if (foundData)
             throw new NotFoundException(
-                `Wishlist item with wishlistId ${user.id} and productId ${productId} already exists`
+                `checkout item with gifter ${user.id} and productId ${productId} already exists`
             );
 
         const checkoutItem = await this.checkoutRepository.create({
@@ -39,4 +39,11 @@ export class CheckoutService {
         });
         return await this.checkoutRepository.save(checkoutItem);
     }
+
+    async deleteCheckout(user: IJwtPayload, id: string) {
+        const checkout = await this.checkoutRepository.findOne({ where: { id, gifter: { id: user.id } } });
+        if (!checkout) throw new NotFoundException('Checkout not found');
+        return await this.checkoutRepository.save({ ...checkout });
+      }
+
 }
