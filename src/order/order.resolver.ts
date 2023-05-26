@@ -9,17 +9,16 @@ import { CreateOrderDto } from './dto/create-order.dto';
 
 @Resolver()
 export class OrderResolver {
-    constructor(private readonly orderService: OrderService) { }
+  constructor(private readonly orderService: OrderService) {}
 
-    @UseGuards(GqlAuthGuard)
-    @Query(() => [Order])
-    async getAllMyOrders(@CurrentUser() user: IJwtPayload) {
-        return await this.orderService.getAllMyOrders(user);
-    }
+  @UseGuards(GqlAuthGuard)
+  @Query(() => [Order])
+  async getAllMyOrders(@CurrentUser() user: IJwtPayload) {
+    return await this.orderService.getAllMyOrders(user);
+  }
 
-    @Query(() => Order)
-    async getOrderById(@Args('id') id: string) {
-        return await this.orderService.getOrderById(id);
-    }
-
+  @Query(() => Order)
+  async getOrderById(@Args('id') id: string) {
+    return await this.orderService.getOrderById(id);
+  }
 }

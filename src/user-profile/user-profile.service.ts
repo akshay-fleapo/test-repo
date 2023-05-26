@@ -23,6 +23,15 @@ export class UserProfileService {
     return foundUser;
   }
 
+  async getUserProfileByUserId(userId: string) {
+    const foundUser = await this.userProfileRepository.findOne({
+      where: { user: { id: userId }, isDeleted: false },
+      relations: ['user']
+    });
+    if (!foundUser) throw new NotFoundException('User profile not found');
+    return foundUser;
+  }
+
   async createUserProfile(user: IJwtPayload, createUserProfileDto: CreateUserProfileDto): Promise<UserProfile> {
     const foundUser = await this.userProfileRepository.findOne({
       where: { user: { id: user.id }, isDeleted: false }

@@ -18,6 +18,11 @@ export class UserProfileResolver {
     return this.userProfileService.getUserProfile(user);
   }
 
+  @Query(() => UserProfile)
+  async getUserProfileByUserId(@Args('userId') userId: string) {
+    return this.userProfileService.getUserProfileByUserId(userId);
+  }
+
   @UseGuards(GqlAuthGuard)
   @Mutation(() => UserProfile)
   async createUserProfile(
