@@ -5,7 +5,6 @@ import { GqlAuthGuard } from 'src/auth/guards';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { IJwtPayload } from 'src/auth/dto/jwt-payload.interface';
 import { UserProfileService } from './user-profile.service';
-import { CreateUserProfileDto } from './dto/create-user-profile.dto';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 
 @Resolver(() => UserProfile)
@@ -21,15 +20,6 @@ export class UserProfileResolver {
   @Query(() => UserProfile)
   async getUserProfileByUserId(@Args('userId') userId: string) {
     return this.userProfileService.getUserProfileByUserId(userId);
-  }
-
-  @UseGuards(GqlAuthGuard)
-  @Mutation(() => UserProfile)
-  async createUserProfile(
-    @CurrentUser() user: IJwtPayload,
-    @Args('createUserProfileInput') createUserProfileDto: CreateUserProfileDto
-  ) {
-    return this.userProfileService.createUserProfile(user, createUserProfileDto);
   }
 
   @UseGuards(GqlAuthGuard)

@@ -9,11 +9,11 @@ export class UserProfile {
   @Field(() => ID)
   id: string;
 
-  @Column({ name: 'first_name' })
+  @Column({ name: 'first_name', default: null })
   @Field()
   firstName: string;
 
-  @Column({ name: 'last_name' })
+  @Column({ name: 'last_name', default: null })
   @Field()
   lastName: string;
 
@@ -25,12 +25,12 @@ export class UserProfile {
   @Field()
   pageName: string;
 
-  @Column({ name: 'user_name' })
+  @Column({ name: 'user_name', default: null })
   @Field()
   @Index()
   userName: string;
 
-  @Column()
+  @Column({ default: null })
   @Field()
   description: string;
 

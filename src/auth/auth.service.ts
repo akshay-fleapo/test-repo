@@ -10,6 +10,8 @@ import { SendOtpDto } from './dto/send-otp.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { AuthToken } from './entities/auth-token.entity';
 import { User } from 'src/user/entity/user.entity';
+import { UserProfileService } from 'src/user-profile/user-profile.service';
+import { UserProfile } from 'src/user-profile/entity/user-profile.entity';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +20,7 @@ export class AuthService {
     private readonly tw: TwilioService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly userProfileService: UserProfileService,
     @InjectRepository(AuthToken) private readonly authTokenRepository: Repository<AuthToken>
   ) {}
 
@@ -25,11 +28,11 @@ export class AuthService {
     const { phone } = body;
     try {
       if (phone === '+919999999999') return { phone };
-
       await this.tw.client.verify.v2.services(this.config.get('TWILIO_VERIFY_SERVICE_SID')).verifications.create({
         to: phone,
         channel: 'sms'
       });
+      await this.userService.createUser({ phone, isPhoneVerified: false });
     } catch (e) {
       throw new ForbiddenException('OTP limit exceeded.');
     }
@@ -60,7 +63,9 @@ export class AuthService {
         if (res.status !== 'approved') throw new Error();
       }
 
-      const user = (await this.userService.createUser({ phone, isPhoneVerified: true })) as User;
+      const user = await this.userService.getUserByPhone(phone);
+
+      await this.userProfileService.createUserProfile(user.id);
 
       const token = await this.generateToken(user.id);
       return { user: user.id, token };
