@@ -22,4 +22,13 @@ export class OrderResolver {
         return await this.orderService.getOrderById(id);
     }
 
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => Order)
+    async createOrder(
+        @CurrentUser() user: IJwtPayload,
+        @Args('createOrderInput') createOrderDto: CreateOrderDto
+    ) {
+        return await this.orderService.createOrder(user, createOrderDto);
+    }
+
 }

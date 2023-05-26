@@ -37,17 +37,17 @@ export class Order {
     @Column({
         type: "enum",
         enum: ["paid" ,"unpaid"],
-        default: null
+        default: "unpaid"
     })
     payment_status: payment_status;
 
-    @Column()
+    @Column({name : "payment_method"})
     @Field(() => String)
-    payment_method: String
+    paymentMethod: String
 
-    @Column()
+    @Column({name : "stripe_payment_id"})
     @Field(() => String)
-    stripe_payment_id: String
+    stripePaymentId: String
 
     @Column({
         type: "enum",
@@ -58,6 +58,7 @@ export class Order {
     @Column({
         type: "enum",
         enum: ["user" , "anonymous"],
+        default: null
     })
     gift_as: gift_as;
 
@@ -89,9 +90,9 @@ export class Order {
     @Field(() => User)
     creator: Relation<User>;
 
-    // ONE-TO-ONE RELATIONSHIP WITH USER
+    // Many-TO-ONE RELATIONSHIP WITH USER
 
-    @OneToOne(() => User)
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'gifter_id' })
     @Index()
     @Field(() => User)

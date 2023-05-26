@@ -23,32 +23,12 @@ export class CreateOrderDto {
     @Field()
     @IsNotEmpty()
     @IsString()
-    status: string;
-
-    @Field()
-    @IsNotEmpty()
-    @IsString()
-    payment_status: string;
-
-    @Field()
-    @IsNotEmpty()
-    @IsString()
     payment_menthod: string;
 
     @Field()
     @IsNotEmpty()
     @IsString()
     stripe_payment_id: string;
-
-    @Field()
-    @IsNotEmpty()
-    @IsString()
-    order_type: string;
-
-    @Field()
-    @IsNotEmpty()
-    @IsString()
-    gift_as: string;
 
     @Field(() => String)
     @IsUUID()
