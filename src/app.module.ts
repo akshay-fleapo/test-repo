@@ -46,10 +46,10 @@ import { CheckoutModule } from './checkout/checkout.module';
     UserProfileModule,
     AddressModule,
     WishlistModule,
-    OrderModule,
     ProductModule,
     WishlistItemsModule,
-    CheckoutModule
+    CheckoutModule,
+    OrderModule
   ]
 })
 export class AppModule {}
