@@ -52,4 +52,9 @@ export class CreateUserProfileDto {
   @IsOptional()
   @IsString()
   backgroundImageUrl: string;
+
+  @Field()
+  @IsOptional()
+  @IsString()
+  stripeCustomerId: string;
 }

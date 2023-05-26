@@ -70,6 +70,12 @@ export class UserProfile {
   @Field(() => Boolean, { defaultValue: false })
   isDeleted: boolean;
 
+  // stripe_customer_id varchar
+
+  @Column({ name: 'stripe_customer_id', default: null })
+  @Field()
+  stripeCustomerId: string;
+
   // ONE-TO-ONE RELATIONSHIP WITH USER
 
   @OneToOne(() => User, { cascade: true, onDelete: 'CASCADE' })

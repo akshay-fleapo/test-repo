@@ -11,6 +11,17 @@ import { UserService } from './user.service';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(GqlAuthGuard)
+  @Query(() => User)
+  async getUser(@CurrentUser() user: IJwtPayload) {
+    return this.userService.getUser(user);
+  }
+
+  @Query(() => User)
+  async getUserById(@Args('id') id: string) {
+    return this.userService.getUserById(id);
+  }
+
   @Query(() => [User])
   async getAllUsers() {
     return this.userService.getAllUsers();
