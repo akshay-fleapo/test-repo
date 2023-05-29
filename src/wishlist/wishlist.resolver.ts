@@ -21,13 +21,13 @@ export class WishlistResolver {
 
   @UseGuards(BasicGuard)
   @Query(() => [Wishlist])
-  async getWishlistsByUserId(@CurrentUser() user: boolean, @Args('userId') userId: string) {
+  async getWishlistsByUserId(@CurrentUser() user: boolean | IJwtPayload, @Args('userId') userId: string) {
     return await this.wishlistService.getWishlistsByUserId(user, userId);
   }
 
   @UseGuards(BasicGuard)
   @Query(() => Wishlist)
-  async getWishlistById(@CurrentUser() user: boolean, @Args('id') id: string) {
+  async getWishlistById(@CurrentUser() user: boolean | IJwtPayload, @Args('id') id: string) {
     return await this.wishlistService.getWishlistById(user, id);
   }
 

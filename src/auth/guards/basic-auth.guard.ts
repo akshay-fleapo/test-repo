@@ -17,7 +17,7 @@ export class BasicGuard implements CanActivate {
           secret: this.congifService.get('JWT_SECRET')
         });
         if (decoded) {
-          req.user = true;
+          req.user = decoded;
           return true;
         }
       } catch (err) {

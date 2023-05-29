@@ -23,14 +23,14 @@ export class WishlistService {
     });
   }
 
-  async getWishlistsByUserId(user: boolean, userId: string) {
+  async getWishlistsByUserId(user: boolean | IJwtPayload, userId: string) {
     return await this.wishlistRepository.find({
       where: { user: { id: userId }, isDeleted: false, ...(!user && { isActive: true }) },
       relations: ['user', 'address']
     });
   }
 
-  async getWishlistById(user: boolean, id: string) {
+  async getWishlistById(user: boolean | IJwtPayload, id: string) {
     const wishlist = await this.wishlistRepository.findOne({
       where: { id, isDeleted: false, ...(!user && { isActive: true }) },
       relations: ['user', 'address']

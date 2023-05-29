@@ -4,6 +4,7 @@ import { ProductService } from 'src/product/product.service';
 import { Raw, Repository } from 'typeorm';
 import { CreateWishlistItemsDto } from './dto/create-wishlist-items.dto';
 import { WishlistItems } from './entity/wishlist-items.entity';
+import { IJwtPayload } from 'src/auth/dto/jwt-payload.interface';
 
 @Injectable()
 export class WishlistItemsService {
@@ -14,7 +15,7 @@ export class WishlistItemsService {
   ) {}
 
   async getAllWishlistItemsByWishlistId(
-    user: boolean,
+    user: boolean | IJwtPayload,
     wishlistId: string,
     priceHL: boolean,
     priceLH: boolean,
