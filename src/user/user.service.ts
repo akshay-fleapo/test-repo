@@ -52,7 +52,10 @@ export class UserService {
   }
 
   async updateUser(user: IJwtPayload, updateUserDto: UpdateUserDto) {
-    const updateUser = await this.userRepository.update({ id: user.id, isDeleted: false }, { ...updateUserDto });
+    const updateUser = await this.userRepository.update(
+      { id: user.id, isDeleted: false },
+      { ...updateUserDto, isProfileCompleted: true }
+    );
     if (!updateUser) throw new NotFoundException('User not found.');
     return updateUser;
   }

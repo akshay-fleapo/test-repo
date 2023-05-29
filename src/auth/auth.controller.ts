@@ -35,7 +35,7 @@ export class AuthController {
   @UseGuards(JWTAuthGuard)
   @Get('/logout')
   async logOut(@Request() req, @Response() res) {
-    const data = await this.authService.logOut(req.user);
-    respond(res, true, data, 'Logged Out Successfully');
+    await this.authService.logOut(req.user);
+    respond(res, true, null, 'Logged Out Successfully');
   }
 }
