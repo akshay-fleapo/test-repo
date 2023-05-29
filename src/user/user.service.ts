@@ -22,6 +22,7 @@ export class UserService {
 
   async getUserByPhone(phone: string) {
     const foundUser = await this.userRepository.findOneBy({ phone, isDeleted: false });
+    if (!foundUser) throw new NotFoundException('User not found.');
     return await this.userRepository.save({ ...foundUser, isPhoneVerified: true });
   }
 
