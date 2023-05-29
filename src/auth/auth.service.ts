@@ -36,7 +36,7 @@ export class AuthService {
     } catch (e) {
       throw new ForbiddenException('OTP limit exceeded.');
     }
-    return { phone };
+    return phone;
   }
 
   async createJWT(userId: string) {
@@ -77,6 +77,7 @@ export class AuthService {
 
   async getUserDetails(user: IJwtPayload) {
     const userDetails = await this.userService.getUser(user);
+    if (!userDetails) throw new UnauthorizedException();
     return userDetails;
   }
 

@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Request, Response, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SendOtpDto } from './dto/send-otp.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { JWTAuthGuard } from './guards';
+import { respond } from './Responsehandler/ResponseHandler';
 
 @Controller({
   path: 'auth',
@@ -12,28 +13,29 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(JWTAuthGuard)
-  @Get('/')
-  get(@Request() req) {
-    const data = this.authService.getUserDetails(req.user);
-    return data;
+  @Get('/validate')
+  async get(@Request() req, @Response() res) {
+    const data = await this.authService.getUserDetails(req.user);
+    respond(res, true, data);
   }
 
   @Post('/otp')
-  sendOTP(@Body() body: SendOtpDto) {
-    const data = this.authService.sendOTP(body);
-    return data;
+  async sendOTP(@Body() body: SendOtpDto, @Response() res) {
+    const data = await this.authService.sendOTP(body);
+    respond(res, true, data);
   }
 
   @Post('/verify-otp')
   @HttpCode(200)
-  verify(@Body() body: VerifyOtpDto) {
-    const data = this.authService.verifyOTP(body);
-    return data;
+  async verify(@Body() body: VerifyOtpDto, @Response() res) {
+    const data = await this.authService.verifyOTP(body);
+    respond(res, true, data);
   }
 
   @UseGuards(JWTAuthGuard)
   @Get('/logout')
-  logOut(@Request() req) {
-    return this.authService.logOut(req.user);
+  async logOut(@Request() req, @Response() res) {
+    const data = await this.authService.logOut(req.user);
+    respond(res, true, data, 'Logged Out Successfully');
   }
 }
