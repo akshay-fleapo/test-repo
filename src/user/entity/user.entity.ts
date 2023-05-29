@@ -24,12 +24,8 @@ export class User {
   id: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true, name: 'first_name' })
-  firstName: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true, name: 'last_name' })
-  lastName: string;
+  @Column({ nullable: true, name: 'name' })
+  name: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })

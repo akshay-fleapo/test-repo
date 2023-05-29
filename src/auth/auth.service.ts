@@ -83,7 +83,7 @@ export class AuthService {
 
   async logOut(user: IJwtPayload) {
     await this.authTokenRepository.delete({ id: user.jti, user: { id: user.id } });
-    return { message: 'Logged out successfully.' };
+    return null;
   }
 
   async validateJWT(payload: IJwtPayload) {
