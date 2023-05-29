@@ -4,6 +4,7 @@ import { ProductService } from 'src/product/product.service';
 import { Raw, Repository } from 'typeorm';
 import { CreateWishlistItemsDto } from './dto/create-wishlist-items.dto';
 import { WishlistItems } from './entity/wishlist-items.entity';
+import { UpdateWishlistItemsDto } from './dto/update-wishlist-items.dto';
 
 @Injectable()
 export class WishlistItemsService {
@@ -57,5 +58,12 @@ export class WishlistItemsService {
     });
 
     return await this.wishlistItemsRepository.save(newItem);
+  }
+
+  async createFeaturedWishlistItemsById(wishlistId: string, createFeaturedWishlistItemsById: UpdateWishlistItemsDto) {
+    const wishlist = await this.wishlistItemsRepository.findOne({ where: { id: wishlistId } });
+    if (!wishlist) throw new NotFoundException('Wishlist Item not found');
+
+    return await this.wishlistItemsRepository.save({ ...wishlist, ...createFeaturedWishlistItemsById });
   }
 }
