@@ -66,4 +66,14 @@ export class WishlistItemsService {
 
     return await this.wishlistItemsRepository.save({ ...wishlist, ...createFeaturedWishlistItemsById });
   }
+
+  async getAllFeaturedWishlistItems() {
+    const foundItems = await this.wishlistItemsRepository.find({
+      where: { isFeatured: true },
+      relations: { product: true, wishlist: true }
+    });
+
+    if (!foundItems) throw new NotFoundException(`featured items not found`);
+    return foundItems;
+  }
 }

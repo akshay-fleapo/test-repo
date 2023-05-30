@@ -7,6 +7,7 @@ import { GqlAuthGuard } from 'src/auth/guards';
 import { BasicGuard } from 'src/auth/guards/basic-auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UpdateWishlistItemsDto } from './dto/update-wishlist-items.dto';
+import { IJwtPayload } from 'src/auth/dto/jwt-payload.interface';
 
 @Resolver()
 export class WishlistItemsResolver {
@@ -37,5 +38,10 @@ export class WishlistItemsResolver {
     @Args('createFeaturedWishlistById') createFeaturedWishlistItemsById: UpdateWishlistItemsDto
   ) {
     return await this.wishlistItemsService.createFeaturedWishlistItemsById(id, createFeaturedWishlistItemsById);
+  }
+
+  @Query(() => [WishlistItems])
+  async getAllFeaturedWishlistItems() {
+    return await this.wishlistItemsService.getAllFeaturedWishlistItems();
   }
 }

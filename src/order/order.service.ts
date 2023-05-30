@@ -32,7 +32,7 @@ export class OrderService {
       where: { creator: { id: user.id }, status: order_status.completed },
       relations: ['gifter', 'address']
     });
-    console.log(giftOrder);
+
     if (giftOrder.length == 0) {
       throw new NotFoundException('Gift not found');
     }

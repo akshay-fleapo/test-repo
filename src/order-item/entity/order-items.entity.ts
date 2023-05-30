@@ -26,19 +26,19 @@ export class OrderItems {
   @Field(() => Product)
   product: Relation<Product>;
 
-  @Field(() => Number)
   @Column()
+  @Field(() => Number)
   quantity: Number;
 
-  @Field(() => Number)
   @Column()
+  @Field(() => Number)
   price: Number;
 
-  @Field(() => Date)
   @Column({ default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
+  @Field(() => Date)
   createdAt: Date;
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ default: () => 'CURRENT_TIMESTAMP', name: 'updated_at' })
   @Field(() => Date)
   updatedAt: Date;
 }
