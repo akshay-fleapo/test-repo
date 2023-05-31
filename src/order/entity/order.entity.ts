@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Address } from 'src/address/entity/address.entity';
+import { Fulfillments } from 'src/fulfillments/entity/fulfillments.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 export enum order_status {
@@ -107,9 +108,9 @@ export class Order {
   @Field(() => User)
   creator: Relation<User>;
 
-  // Many-TO-ONE RELATIONSHIP WITH USER
+  // ONE-TO-ONE RELATIONSHIP WITH USER
 
-  @ManyToOne(() => User)
+  @OneToOne(() => User)
   @JoinColumn({ name: 'gifter_id' })
   @Index()
   @Field(() => User)
@@ -122,4 +123,9 @@ export class Order {
   @Index()
   @Field(() => Address)
   address: Relation<Address>;
+
+  // ONE TO ONE RELATIONSIP WITH FULFILLMENTS
+  @OneToOne(() => Fulfillments, ({ order }) => order)
+  @Field(() => Fulfillments)
+  fulfillments: Relation<Fulfillments>;
 }

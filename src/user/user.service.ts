@@ -20,6 +20,11 @@ export class UserService {
     return user;
   }
 
+  async getUserByPhone(phone: string) {
+    const foundUser = await this.userRepository.findOneBy({ phone, isDeleted: false });
+    return await this.userRepository.save({ ...foundUser, isPhoneVerified: true });
+  }
+
   // thi API will call in every page for validate the token and extract the user info from token
   async getUser(user: IJwtPayload) {
     const foundUser = await this.userRepository.findOneBy({ id: user.id, isDeleted: false });
@@ -39,12 +44,6 @@ export class UserService {
     }
     const user = this.userRepository.create(createUserDto);
     await this.userRepository.save(user);
-    return user;
-  }
-
-  async getUserByPhone(phone: string) {
-    const user = await this.userRepository.findOneBy({ phone, isDeleted: false });
-    if (!user) throw new NotFoundException('User not found.');
     return user;
   }
 

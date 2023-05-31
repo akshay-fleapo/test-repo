@@ -21,13 +21,14 @@ export class WishlistResolver {
 
   @UseGuards(BasicGuard)
   @Query(() => [Wishlist])
-  async getWishlistsByUserId(@CurrentUser() user: boolean, @Args('userId') userId: string) {
+  async getWishlistsByUserId(@CurrentUser() user: boolean | IJwtPayload, @Args('userId') userId: string) {
     return await this.wishlistService.getWishlistsByUserId(user, userId);
   }
 
+  @UseGuards(BasicGuard)
   @Query(() => Wishlist)
-  async getWishlistById(@Args('id') id: string) {
-    return await this.wishlistService.getWishlistById(id);
+  async getWishlistById(@CurrentUser() user: boolean | IJwtPayload, @Args('id') id: string) {
+    return await this.wishlistService.getWishlistById(user, id);
   }
 
   @UseGuards(GqlAuthGuard)
@@ -59,5 +60,11 @@ export class WishlistResolver {
   @Mutation(() => Wishlist)
   async deleteWishlist(@CurrentUser() user: IJwtPayload, @Args('id') id: string) {
     return await this.wishlistService.deleteWishlist(user, id);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Wishlist)
+  async deleteAllWishlists(@CurrentUser() user: IJwtPayload) {
+    return await this.wishlistService.deleteAllWishlists(user);
   }
 }

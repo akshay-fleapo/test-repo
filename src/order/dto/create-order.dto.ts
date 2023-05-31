@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import { order_type } from '../entity/order.entity';
+import { gift_as, order_status, order_type, payment_status } from '../entity/order.entity';
 
 @InputType()
 export class CreateOrderDto {
@@ -19,9 +19,15 @@ export class CreateOrderDto {
   url: string;
 
   @Field()
+  status: order_status;
+
+  @Field()
+  paymentStatus: payment_status;
+
+  @Field()
   @IsNotEmpty()
   @IsString()
-  paymentMenthod: string;
+  paymentMethod: string;
 
   @Field()
   @IsNotEmpty()
@@ -29,8 +35,10 @@ export class CreateOrderDto {
   stripePaymentId: string;
 
   @Field()
-  @IsNotEmpty()
   orderType: order_type;
+
+  @Field()
+  giftAs: gift_as;
 
   @Field(() => String)
   @IsUUID()

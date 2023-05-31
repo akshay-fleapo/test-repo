@@ -41,11 +41,14 @@ export class OrderService {
 
   async createOrder(user: IJwtPayload, createOrderDto: CreateOrderDto): Promise<Order> {
     const newOrder = this.orderRepository.create({
+      status: createOrderDto.status,
+      paymentStatus: createOrderDto.paymentStatus,
+      giftAs: createOrderDto.giftAs,
       orderType: createOrderDto.orderType,
       total: createOrderDto.total,
       slug: createOrderDto.slug,
       url: createOrderDto.url,
-      paymentMethod: createOrderDto.paymentMenthod,
+      paymentMethod: createOrderDto.paymentMethod,
       stripePaymentId: createOrderDto.stripePaymentId,
       gifter: { id: user.id },
       creator: { id: createOrderDto.creatorId },

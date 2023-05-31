@@ -37,7 +37,7 @@ export class User {
   email: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   @Index()
   phone: string;
 

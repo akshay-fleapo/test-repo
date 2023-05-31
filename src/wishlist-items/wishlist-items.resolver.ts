@@ -17,7 +17,7 @@ export class WishlistItemsResolver {
   @UseGuards(BasicGuard)
   @Query(() => [WishlistItems])
   async getAllWishlistItemsByWishlistId(
-    @CurrentUser() user: boolean,
+    @CurrentUser() user: boolean | IJwtPayload,
     @Args('wishlistId', { type: () => String }) wishlistId: string,
     @Args('priceHL', { type: () => Boolean, nullable: true }) priceHL: boolean,
     @Args('priceLH', { type: () => Boolean, nullable: true }) priceLH: boolean,
