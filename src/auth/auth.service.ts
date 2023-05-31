@@ -3,15 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TwilioService } from 'nestjs-twilio';
+import { UserProfileService } from 'src/user-profile/user-profile.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { IJwtPayload } from './dto/jwt-payload.interface';
 import { SendOtpDto } from './dto/send-otp.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { AuthToken } from './entities/auth-token.entity';
-import { User } from 'src/user/entity/user.entity';
-import { UserProfileService } from 'src/user-profile/user-profile.service';
-import { UserProfile } from 'src/user-profile/entity/user-profile.entity';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +25,7 @@ export class AuthService {
   async sendOTP(body: SendOtpDto) {
     const { phone } = body;
     try {
-      if (phone === '+919999999999') return { phone };
+      if (phone === '+91 99999-99999') return { phone, otp: '123456' };
       await this.tw.client.verify.v2.services(this.config.get('TWILIO_VERIFY_SERVICE_SID')).verifications.create({
         to: phone,
         channel: 'sms'
@@ -53,7 +51,7 @@ export class AuthService {
   async verifyOTP(body: VerifyOtpDto) {
     const { phone, otp } = body;
     try {
-      if (phone !== '+919999999999' && otp !== '123456') {
+      if (phone !== '+91 99999-99999' && otp !== '123456') {
         const res = await this.tw.client.verify.v2
           .services(this.config.get('TWILIO_VERIFY_SERVICE_SID'))
           .verificationChecks.create({
