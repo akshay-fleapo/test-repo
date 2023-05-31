@@ -22,12 +22,16 @@ export class UserService {
 
   async getUserByPhone(phone: string) {
     const foundUser = await this.userRepository.findOneBy({ phone, isDeleted: false });
+    if (!foundUser) throw new NotFoundException('User not found.');
     return await this.userRepository.save({ ...foundUser, isPhoneVerified: true });
   }
 
   // thi API will call in every page for validate the token and extract the user info from token
   async getUser(user: IJwtPayload) {
-    const foundUser = await this.userRepository.findOneBy({ id: user.id, isDeleted: false });
+    const foundUser = await this.userRepository.findOne({
+      select: ['id', 'firstName', 'lastName', 'email', 'isAdmin', 'isProfileCompleted'],
+      where: { id: user.id, isDeleted: false }
+    });
     if (!foundUser) throw new NotFoundException('User not found.');
     return foundUser;
   }
@@ -48,7 +52,10 @@ export class UserService {
   }
 
   async updateUser(user: IJwtPayload, updateUserDto: UpdateUserDto) {
-    const updateUser = await this.userRepository.update({ id: user.id, isDeleted: false }, { ...updateUserDto });
+    const updateUser = await this.userRepository.update(
+      { id: user.id, isDeleted: false },
+      { ...updateUserDto, isProfileCompleted: true }
+    );
     if (!updateUser) throw new NotFoundException('User not found.');
     return updateUser;
   }
