@@ -9,13 +9,9 @@ export class UserProfile {
   @Field(() => ID)
   id: string;
 
-  @Column({ name: 'first_name', default: null })
+  @Column({ name: 'name', default: null })
   @Field()
-  firstName: string;
-
-  @Column({ name: 'last_name', default: null })
-  @Field()
-  lastName: string;
+  name: string;
 
   @Column({ name: 'avatar_url', default: null })
   @Field()

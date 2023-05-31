@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.7.1",
+    "@google-cloud/storage": "^6.10.1",
     "@nestjs/apollo": "^11.0.5",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/cache-manager": "^1.0.0",
@@ -51,7 +52,9 @@
     "pg": "^8.11.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.16"
+    "sharp": "^0.32.1",
+    "typeorm": "^0.3.16",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

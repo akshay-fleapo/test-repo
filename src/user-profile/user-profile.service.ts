@@ -13,7 +13,6 @@ export class UserProfileService {
   ) {}
 
   async getUserProfile(user: IJwtPayload) {
-    console.log('user---', user);
     const foundUser = await this.userProfileRepository.findOne({
       where: { user: { id: user.id }, isDeleted: false },
       relations: ['user']
