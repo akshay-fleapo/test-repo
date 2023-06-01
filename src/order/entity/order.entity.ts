@@ -3,10 +3,25 @@ import { Address } from 'src/address/entity/address.entity';
 import { Fulfillments } from 'src/fulfillments/entity/fulfillments.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
-export type order_status = 'created' | 'processing' | 'completed' | 'cencelled' | 'refunded';
-export type payment_status = 'paid' | 'unpaid';
-export type order_type = 'product_delivery' | 'case_transfer';
-export type gift_as = 'user' | 'anonymous';
+export enum order_status {
+  created = 'created',
+  processing = 'processing',
+  completed = 'completed',
+  cencelled = 'cencelled',
+  refunded = 'refunded'
+}
+export enum payment_status {
+  paid = 'paid',
+  unpaid = 'unpaid'
+}
+export enum order_type {
+  product_delivery = 'product_delivery',
+  case_transfer = 'case_transfer'
+}
+export enum gift_as {
+  user = 'user',
+  anonymous = 'anonymous'
+}
 
 @Entity('order')
 @ObjectType()
@@ -29,37 +44,41 @@ export class Order {
 
   @Column({
     type: 'enum',
-    enum: ['created', 'processing', 'completed', 'cencelled', 'refunded'],
-    default: 'processing'
+    enum: order_status,
+    default: order_status.processing
   })
   status: order_status;
 
   @Column({
+    name: 'payment_status',
     type: 'enum',
-    enum: ['paid', 'unpaid'],
-    default: null
+    enum: payment_status,
+    default: payment_status.unpaid
   })
-  payment_status: payment_status;
+  paymentStatus: payment_status;
 
-  @Column()
+  @Column({ name: 'payment_method' })
   @Field(() => String)
-  payment_method: String;
+  paymentMethod: String;
 
-  @Column()
+  @Column({ name: 'stripe_payment_id' })
   @Field(() => String)
-  stripe_payment_id: String;
+  stripePaymentId: String;
 
   @Column({
+    name: 'order_type',
     type: 'enum',
-    enum: ['product_delivery', 'case_transfer']
+    enum: order_type
   })
-  order_type: order_type;
+  orderType: order_type;
 
   @Column({
+    name: 'gift_as',
     type: 'enum',
-    enum: ['user', 'anonymous']
+    enum: gift_as,
+    default: gift_as.anonymous
   })
-  gift_as: gift_as;
+  giftAs: gift_as;
 
   @Column({ default: () => 'now()', name: 'created_at' })
   @Field(() => Date)

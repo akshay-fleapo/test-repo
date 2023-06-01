@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Product } from 'src/product/entity/product.entity';
 import { Wishlist } from 'src/wishlist/entity/wishlist.entity';
-import { Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 @Entity('wishlist_items')
 @ObjectType()
@@ -10,8 +10,12 @@ export class WishlistItems {
   @Field(() => ID)
   id: string;
 
+  @Column({ default: false, name: 'is_featured' })
+  @Field(() => Boolean)
+  isFeatured: boolean;
+
   // MANY TO ONE RELATIONSHIP WITH WISHLIST
-  
+
   @ManyToOne(() => Wishlist)
   @JoinColumn({ name: 'wishlist_id' })
   @Field(() => Wishlist)

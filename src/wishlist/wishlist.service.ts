@@ -49,6 +49,7 @@ export class WishlistService {
   }
 
   async createWishlist(user: IJwtPayload, createWishlistDto: CreateWishlistDto) {
+    console.log(createWishlistDto);
     const wishlist = await this.wishlistRepository.create({
       ...createWishlistDto,
       user: { id: user.id },

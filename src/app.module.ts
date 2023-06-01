@@ -13,6 +13,8 @@ import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
 import { WishlistItemsModule } from './wishlist-items/wishlist-items.module';
 import { CheckoutModule } from './checkout/checkout.module';
+import { OrderItemsModule } from './order-item/order-items.module';
+
 import { FulfillmentsModule } from './fulfillments/fulfillments.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -52,6 +54,7 @@ import { AppService } from './app.service';
     ProductModule,
     WishlistItemsModule,
     CheckoutModule,
+    OrderItemsModule,
     OrderModule,
     FulfillmentsModule
   ],
