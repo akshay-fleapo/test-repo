@@ -63,8 +63,9 @@ export class WishlistResolver {
   }
 
   @UseGuards(GqlAuthGuard)
-  @Mutation(() => Wishlist)
+  @Mutation(() => [Wishlist])
   async deleteAllWishlists(@CurrentUser() user: IJwtPayload) {
+    console.log('deleteAllWishlists', user);
     return await this.wishlistService.deleteAllWishlists(user);
   }
 }

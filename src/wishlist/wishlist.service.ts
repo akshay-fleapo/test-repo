@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { Wishlist } from './entity/wishlist.entity';
-import { AuthService } from 'src/auth/auth.service';
 
 // TODO : ASK isActive Problem statement ... IsActive Wishlist will be shown in the list or not and how it will be used
 
@@ -76,8 +75,14 @@ export class WishlistService {
   }
 
   async deleteAllWishlists(user: IJwtPayload) {
-    const wishlist = await this.wishlistRepository.find({ where: { user: { id: user.id }, isDeleted: false } });
-    if (!wishlist) throw new NotFoundException('Wishlist not found');
-    return await this.wishlistRepository.save({ ...wishlist, isDeleted: true, isActive: false });
+    const wishlists = await this.wishlistRepository.find({
+      where: { user: { id: user.id }, isDeleted: false }
+    });
+    if (!wishlists || wishlists.length === 0) {
+      throw new NotFoundException('Wishlist not found');
+    }
+    await this.wishlistRepository.update({ user: { id: user.id }, isDeleted: false }, { isDeleted: true });
+
+    return wishlists;
   }
 }
